@@ -5,11 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 public class Gerenciacao {
 	 
-    /**
-     * Retorna o próximo valor de nCadastrados para ser exibido/usado.
-     * @param conn Conexão com o banco de dados.
-     * @return O valor atual de nCadastrados na tabela.
-     */
+    
     public int getNomesCount() {
         String sql = "SELECT COUNT(id) FROM livros";
         try (Connection conn = Conexao.getConnection();
@@ -26,11 +22,7 @@ public class Gerenciacao {
         return 0;
     }
     
-    /**
-     * Retorna o próximo valor de nEmprestados para ser exibido/usado.
-     * @param conn Conexão com o banco de dados.
-     * @return O valor atual de nEmprestados na tabela.
-     */
+    
     public int getEmprestadosCount() {
         String sql = "SELECT COUNT(id) FROM livros WHERE status = 'EMPRESTADO'";
         try (Connection conn = Conexao.getConnection();
@@ -38,7 +30,7 @@ public class Gerenciacao {
              ResultSet rs = stmt.executeQuery()) {
             
             if (rs.next()) {
-                // Se a tabela estiver vazia, retorna 0. Senão, retorna a soma.
+              
                 return rs.getInt(1); 
             }
         } catch (SQLException e) {
@@ -47,7 +39,7 @@ public class Gerenciacao {
         return 0;
     }
 
-    // --- CADASTRO (btnCadastrar) ---
+    
     public boolean cadastrarLivro(String id, String titulo, String autor, String classificacao, String ano, String leitor, String dataEmprestimo, String dataDevolucao, String status) {
         String sql = "INSERT INTO livros (id, titulo, autor, classificacao, ano, leitor, dataEmprestimo, dataDevolucao, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = Conexao.getConnection();
@@ -71,10 +63,7 @@ public class Gerenciacao {
         }
     }
 
-    /**
-     * Objeto de ajuda para retornar os dados do livro, 
-     * como a classe 'Moeda' que você criou.
-     */
+   
     public static class Livro {
         public String id;
         public String titulo;
@@ -88,9 +77,9 @@ public class Gerenciacao {
         public String status;
     }
     
-    // --- PROCURAR (btnProcurar) ---
+   
     public Livro procurarLivro(String id, String titulo, String leitor) {
-        // A query será montada dinamicamente, priorizando ID, depois Título, depois Leitor
+        
         String sql = "SELECT * FROM livros WHERE ";
         if (!id.isEmpty()) {
             sql += "id = ?";
@@ -99,13 +88,13 @@ public class Gerenciacao {
         } else if (!leitor.isEmpty()) {
             sql += "leitor = ?";
         } else {
-            return null; // Nenhum critério de pesquisa
+            return null; 
         }
         
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            // Define o parâmetro com base no critério usado
+            
             if (!id.isEmpty()) {
                 stmt.setInt(1, Integer.parseInt(id));
             } else if (!titulo.isEmpty()) {
@@ -136,7 +125,7 @@ public class Gerenciacao {
         return null;
     }
     
-    // --- EMPRESTAR (btnEmprestar) ---
+   
     public boolean emprestarLivro(String id, String leitor, String dataEmprestimo, String dataDevolucao) {
         String status = "EMPRESTADO";
         String sql = "UPDATE livros SET leitor = ?, dataEmprestimo = ?, dataDevolucao = ?, status = ? WHERE id = ?";
@@ -158,7 +147,6 @@ public class Gerenciacao {
         }
     }
     
-    // --- DEVOLVER (btnDevolver) ---
     public boolean devolverLivro(String id) {
         String status = "DISPONÍVEL";
         String sql = "UPDATE livros SET leitor = NULL, dataEmprestimo = NULL, dataDevolucao = NULL, status = ? WHERE id = ?";
@@ -177,7 +165,6 @@ public class Gerenciacao {
         }
     }
     
-    // --- EXCLUIR (btnExcluir) ---
     public boolean excluirLivro(String id) {
         String sql = "DELETE FROM livros WHERE id = ?";
         

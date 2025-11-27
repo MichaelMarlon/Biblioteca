@@ -11,16 +11,14 @@ public class Interface extends javax.swing.JFrame {
 	        initComponents();
 	        atualizarContadores();
 	    }
-	 // Método auxiliar para atualizar os labels de contagem
+	
 	    private void atualizarContadores() {
-	        // Assume que a tabela armazena a contagem atualizada em cada linha.
-	        // O método getNomesCount/getEmprestadosCount na LivroDAO soma as colunas
-	        // nCadastrados e nEmprestados de todas as linhas.
+	      
 	        lblCadastrado2.setText(String.valueOf(gerencia.getNomesCount()));
 	        lblEmprestado2.setText(String.valueOf(gerencia.getEmprestadosCount()));
 	    }
 	    @SuppressWarnings("unchecked")
-	    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+	                             
 	    private void initComponents() {
 
 	        lblPrincipal = new javax.swing.JLabel();
@@ -400,9 +398,7 @@ public class Interface extends javax.swing.JFrame {
 	        limparCampos();
 	        
 	    }       
-	     /**
-	     * Lógica para o botão CADASTRAR LIVRO.
-	     */
+	     
 	    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {
 	        String id = txtId.getText();
 	        String titulo = txtTitulo.getText();
@@ -416,14 +412,14 @@ public class Interface extends javax.swing.JFrame {
 	        }
 
 	        try {
-	            // A palavra DISPONÍVEL deve ser gravada no campo status
+	            
 	            String status = "DISPONÍVEL";
-	            // O campo nCadastrados da tabela livros deve ser acrescentado mais 1
+	            
 	            
 
 	            boolean sucesso = gerencia.cadastrarLivro(
 	                id, titulo, autor, classificacao, ano, 
-	                "", "", "", // leitor, dataEmprestimo, dataDevolucao vazios no cadastro
+	                "", "", "", 
 	               status
 	            );
 
@@ -441,9 +437,7 @@ public class Interface extends javax.swing.JFrame {
 	        }
 	    }
 
-	    /**
-	     * Lógica para o botão PROCURAR LIVRO.
-	     */
+	    
 	    private void btnProcurarActionPerformed(java.awt.event.ActionEvent evt) {
 	        String id = txtId.getText();
 	        String titulo = txtTitulo.getText();
@@ -457,24 +451,24 @@ public class Interface extends javax.swing.JFrame {
 	        Gerenciacao.Livro livro = gerencia.procurarLivro(id, titulo, leitor);
 
 	        if (livro != null) {
-	            // Insere nas caixas de texto os valores da tabela
+	          
 	            txtId.setText(livro.id);
 	            txtTitulo.setText(livro.titulo);
 	            txtAutor.setText(livro.autor);
 	            txtClassificacao.setText(livro.classificacao);
 	            txtAno.setText(livro.ano);
-	            txtLeitor.setText(livro.leitor != null ? livro.leitor : ""); // Trata NULL do DB
+	            txtLeitor.setText(livro.leitor != null ? livro.leitor : ""); 
 	            txtEmprestimo.setText(livro.dataEmprestimo != null ? livro.dataEmprestimo : "");
 	            txtDevolucao.setText(livro.dataDevolucao != null ? livro.dataDevolucao : "");
 
-	            // Preenche o lblStatus
+	            
 	            lblDisponivel.setText(livro.status);
 	            
-	            // Define a cor
+	            
 	            if ("DISPONÍVEL".equals(livro.status)) {
-	                lblDisponivel.setForeground(new Color(0, 102, 51)); // Verde Escuro
+	                lblDisponivel.setForeground(new Color(0, 102, 51)); 
 	            } else if ("EMPRESTADO".equals(livro.status)) {
-	                lblDisponivel.setForeground(Color.RED); // Vermelho
+	                lblDisponivel.setForeground(Color.RED); 
 	            } else {
 	                lblDisponivel.setForeground(Color.BLACK);
 	            }
@@ -485,9 +479,7 @@ public class Interface extends javax.swing.JFrame {
 	        }
 	    }
 
-	    /**
-	     * Lógica para o botão EMPRESTAR LIVRO.
-	     */
+	    
 	    private void btnEmprestarActionPerformed(java.awt.event.ActionEvent evt) {
 	        String id = txtId.getText();
 	        String leitor = txtLeitor.getText();
@@ -499,14 +491,11 @@ public class Interface extends javax.swing.JFrame {
 	            return;
 	        }
 	        
-	        // Simplesmente tenta emprestar. A checagem de existência e status é feita implicitamente
-	        // no update, mas um check anterior pode ser mais amigável.
-	        // Vamos usar a lógica mais simples (direto no update) por brevidade, mas
-	        // o ideal seria procurar o livro primeiro.
+	       
 
 	        if (gerencia.emprestarLivro(id, leitor, dataEmprestimo, dataDevolucao)) {
 	            JOptionPane.showMessageDialog(this, "Livro emprestado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-	            // Atualiza labels e limpa campos
+	            
 	            lblDisponivel.setText("EMPRESTADO");
 	            lblDisponivel.setForeground(Color.RED);
 	            limparCampos();
@@ -516,9 +505,7 @@ public class Interface extends javax.swing.JFrame {
 	        }
 	    }
 
-	    /**
-	     * Lógica para o botão DEVOLVER LIVRO.
-	     */
+	   
 	    private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {
 	        String id = txtId.getText();
 
@@ -529,7 +516,7 @@ public class Interface extends javax.swing.JFrame {
 
 	        if (gerencia.devolverLivro(id)) {
 	            JOptionPane.showMessageDialog(this, "Livro devolvido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-	            // Atualiza labels e limpa campos
+	            
 	            lblDisponivel.setText("DISPONÍVEL");
 	            lblDisponivel.setForeground(new Color(0, 102, 51));
 	            limparCampos();
@@ -539,9 +526,7 @@ public class Interface extends javax.swing.JFrame {
 	        }
 	    }
 
-	    /**
-	     * Lógica para o botão EXCLUIR LIVRO.
-	     */
+	    
 	    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {
 	        String id = txtId.getText();
 
@@ -555,7 +540,7 @@ public class Interface extends javax.swing.JFrame {
 	        if (confirmacao == JOptionPane.YES_OPTION) {
 	            if (gerencia.excluirLivro(id)) {
 	                JOptionPane.showMessageDialog(this, "Livro excluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-	                // O nCadastrados foi diminuído na exclusão, basta atualizar.
+	                
 	                limparCampos();
 	                atualizarContadores();
 	            } else {
